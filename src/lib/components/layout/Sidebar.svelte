@@ -105,6 +105,7 @@
 	import SearchIcon from './Sidebar/icons/Search.svelte';
 	import Sidebar from '../icons/Sidebar.svelte';
 	import WorkspaceIcon from './Sidebar/icons/Workspace.svelte';
+	import GridIcon from '../icons/Grid.svelte';
 	import HotkeyHint from '../common/HotkeyHint.svelte';
 	import Dropdown from '../common/Dropdown.svelte';
 	import DropdownMenu from '../common/DropdownMenu.svelte';
@@ -116,7 +117,7 @@
 	import MoreHorizontalIcon from './Sidebar/icons/MoreHorizontal.svelte';
 	import MobileSwipePanel from '../common/MobileSwipePanel.svelte';
 
-	const DEFAULT_PINNED_ITEMS = ['notes', 'workspace'];
+	const DEFAULT_PINNED_ITEMS = ['resources', 'notes', 'workspace'];
 
 	let scrollTop = 0;
 
@@ -282,6 +283,8 @@
 
 	$: isMenuItemVisible = (id) => {
 		switch (id) {
+			case 'resources':
+				return true;
 			case 'notes':
 				return (
 					($config?.features?.enable_notes ?? false) &&
@@ -315,6 +318,7 @@
 
 	const getMenuItemMeta = (id) => {
 		const items = {
+			resources: { label: $i18n.t('资源中心'), href: '/resources', iconType: 'resources' },
 			notes: { label: $i18n.t('Notes'), href: '/notes', iconType: 'note' },
 			workspace: { label: $i18n.t('Workspace'), href: '/workspace', iconType: 'workspace' },
 			automations: { label: $i18n.t('Automations'), href: '/automations', iconType: 'automations' },
@@ -325,6 +329,7 @@
 	};
 
 	const menuItemPathPrefixes = {
+		resources: '/resources',
 		notes: '/notes',
 		workspace: '/workspace',
 		calendar: '/calendar',
@@ -1217,7 +1222,9 @@
 													: 'bg-black/[0.035] dark:bg-white/[0.045]'
 												: 'group-hover:bg-gray-100 dark:group-hover:bg-gray-900'}"
 										>
-											{#if itemId === 'notes'}
+											{#if itemId === 'resources'}
+												<GridIcon className="size-4" strokeWidth="1.5" />
+											{:else if itemId === 'notes'}
 												<NotesIcon className="size-4" strokeWidth="1.5" />
 											{:else if itemId === 'workspace'}
 												<WorkspaceIcon className="size-4" strokeWidth="1.5" />
@@ -1462,7 +1469,9 @@
 											aria-label={$i18n.t(meta.label)}
 										>
 											<div class="self-center flex size-4 shrink-0 items-center justify-center">
-												{#if itemId === 'notes'}
+												{#if itemId === 'resources'}
+													<GridIcon className="size-4" strokeWidth="1.5" />
+												{:else if itemId === 'notes'}
 													<NotesIcon className="size-4" strokeWidth="1.5" />
 												{:else if itemId === 'workspace'}
 													<WorkspaceIcon className="size-4" strokeWidth="1.5" />
